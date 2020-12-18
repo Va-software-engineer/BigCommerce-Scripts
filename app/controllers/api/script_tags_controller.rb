@@ -49,8 +49,13 @@ class Api::ScriptTagsController < ApplicationController
   end
 
   def update_store_property
-    @store.update(property_id: params[:new_value])
-    render json: { status: true }
+    if !@store.enabled_scripts
+      @store.update(property_id: params[:new_value], enabled_scripts: true)
+      install_all_scripts
+    else
+      @store.update(property_id: params[:new_value])
+    end
+    render json: { status: true, store: @store}
   end
 
   private
@@ -86,5 +91,20 @@ class Api::ScriptTagsController < ApplicationController
       )
     else
     end
+  end
+
+  def install_all_scripts
+    main_script = @store.scripts.find_by(name: 'Main Script')
+    conversion_pixel = @store.scripts.find_by(name: 'Conversion Pixel')
+    add_to_cart = @store.scripts.find_by(name: 'Add to Cart')
+    
+    res = main_script.install_main_script(@store)
+    main_script.update(uuid: res['data']['uuid'], api_client_id: res['data']['api_client_id'], status: true)
+
+    res = conversion_pixel.install_pixel_script(@store)
+    conversion_pixel.update(uuid: res['data']['uuid'], api_client_id: res['data']['api_client_id'], status: true)
+
+    res = add_to_cart.install_add_to_cart_script(@store)
+    add_to_cart.update(uuid: res['data']['uuid'], api_client_id: res['data']['api_client_id'], status: true)
   end
 end

@@ -89,16 +89,38 @@ export default function Summary(props) {
     e => {
       const {value} = e.target;
       setStorePropertyId(value);
+    })
+
+  const onUpdateInput = useCallback(
+    e => {
+      const {value} = e.target;
       updateStoreProperty(value);
     })
 
   function updateStoreProperty(value){
+    if(!storeInfo.enabled_scripts){
+      AddAlert('Property ID Updated', 'Property ID Added Successfully, Enabling Your Tags !', 'success')
+    }
     ApiService.updateStoreProperty({store_id: storeId, new_value: value})
       .then(function (response) {
+        if(response.data.store.enabled_scripts && !storeInfo.enabled_scripts){
+          AddAlert('Tag Enabled', 'Tags Enabled Successfully!', 'success')
+          RefatchScripts();
+        }
       })
       .catch(function (error) {
         console.log(error);
         AddAlert('Error', 'Unable To Fetch Data, Please Try Again!', 'error')
+      })
+  }
+
+  function RefatchScripts(){
+    ApiService.getStoreScripts({store_id: storeId})
+      .then(function (response) {
+        setStoreScripts(response.data.scripts);
+        setStoreInfo(response.data.store);
+        setStorePropertyId(response.data.store.property_id);
+        setLoading(false);
       })
   }
 
@@ -131,6 +153,7 @@ export default function Summary(props) {
               type="text"
               value={storePropertyId}
               onChange={onChangeInput}
+              onBlur={onUpdateInput}
             />
           </div>
         </Panel>
