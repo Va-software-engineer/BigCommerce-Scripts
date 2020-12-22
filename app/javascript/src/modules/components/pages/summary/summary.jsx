@@ -91,15 +91,15 @@ export default function Summary(props) {
       setStorePropertyId(value);
     })
 
-  const onUpdateInput = useCallback(
-    e => {
-      const {value} = e.target;
-      updateStoreProperty(value);
-    })
+  const onUpdateInput= () => {
+      updateStoreProperty(storePropertyId);
+    }
 
   function updateStoreProperty(value){
     if(!storeInfo.enabled_scripts){
       AddAlert('Property ID Updated', 'Property ID Added Successfully, Enabling Your Tags !', 'success')
+    } else {
+      AddAlert('Property ID Updated', 'Property ID Updated Successfully', 'success')
     }
     ApiService.updateStoreProperty({store_id: storeId, new_value: value})
       .then(function (response) {
@@ -153,7 +153,6 @@ export default function Summary(props) {
               type="text"
               value={storePropertyId}
               onChange={onChangeInput}
-              onBlur={onUpdateInput}
             />
           </div>
         </Panel>
@@ -166,10 +165,25 @@ export default function Summary(props) {
               { header: 'Status', hash: 'status', render: ({ status }) => orderStatus(status) },
               { header: 'Actions', hash: 'status', render: ({ id, status }) => updateStatus(id, status) },
             ]}
-            items={storeScripts}
+            items={!storeInfo.enabled_scripts ? [] : storeScripts}
             stickyHeader
           />
+          { !storeInfo.enabled_scripts  &&
+            <div style={{textAlign: 'center'}}>
+              <h3>No tags added yet.</h3>
+              <p>Enter your Property ID above and save it to add analytics tags to your storefront.</p>
+            </div>
+          }
         </Panel>
+
+        <Panel
+          header=" "
+          action={{
+            variant: 'primary',
+            text: 'Save',
+            onClick: onUpdateInput,
+          }}
+        ></Panel>
       </>
       }
 
