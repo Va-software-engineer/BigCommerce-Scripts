@@ -6,7 +6,7 @@ class Store < ApplicationRecord
 
   def add_scripts
     scripts.create(name: 'Main Script', pages: 'All', location: 'Head', status: false)
-    scripts.create(name: 'Conversion Pixel', pages: 'CheckOut', location: 'Footer', status: false)
-    scripts.create(name: 'Add to Cart', pages: 'Store Front', location: 'Footer', status: false)
+    scripts.create(name: 'Conversion Pixel', pages: 'Checkout', location: 'Footer', status: false)
+    scripts.create(name: 'Add to Cart', pages: 'Storefront', location: 'Footer', status: false)
   end
 end

@@ -1,0 +1,42 @@
+# Rails
+*.rbc
+.rspec
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-[0-9]*
+/public/system
+/coverage/
+/spec/tmp
+*.orig
+
+# Logfiles and tempfiles
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Secrets
+config/initializers/secret_token.rb
+config/master.key
+config/application.yml
+
+# Bundler
+/.bundle
+/vendor/bundle
+
+# Node modules
+node_modules/
+
+# Precompiled javascript packs
+/public/packs
+/public/packs-test
+/public/assets
+
+# Yarn files
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# Uploaded files in development
+/storage/*
+!/storage/.keep

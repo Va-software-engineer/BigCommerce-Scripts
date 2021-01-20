@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback} from 'react'
-import { Box, Panel, Text, Badge, Input, Table, Button, Modal } from '@bigcommerce/big-design';
+import { Panel, Text, Badge, Input, Table, Button, Modal } from '@bigcommerce/big-design';
+import { StyledFooter } from './styled'
 
 import Loader from '../../common/Loader';
 import {ApiService} from '../../../../services/apiServices';
@@ -55,7 +56,7 @@ export default function Summary(props) {
 
   function setValuesToUpdate(script_id, status) {
     if(storePropertyId == '' || storePropertyId == null){
-      AddAlert('Error', 'Please Add Your Property ID First!', 'error')
+      AddAlert('Error', 'Please add your Property ID first!', 'error')
       return null;
     }
     setCurrentStatus(status);
@@ -75,12 +76,12 @@ export default function Summary(props) {
         const findIndex = storeScripts.findIndex( script => script.id === currentScript.id);
         newScripts[findIndex] = newScript;
         setStoreScripts(newScripts);
-        AddAlert('Script Update', 'script Has Been Updated Successfully!', 'success')
+        AddAlert('Script Updated', 'Script has been updated successfully!', 'success')
         setLoading(false);
       })
       . catch(function (error) {
         console.log(error);
-        AddAlert('Error', 'Something Went Wrong, Please Try Again!', 'error')
+        AddAlert('Error', 'Something went wrong, Please try again!', 'error')
         setLoading(false);
       })
   }
@@ -97,20 +98,20 @@ export default function Summary(props) {
 
   function updateStoreProperty(value){
     if(!storeInfo.enabled_scripts){
-      AddAlert('Property ID Updated', 'Property ID Added Successfully, Enabling Your Tags !', 'success')
+      AddAlert('Property ID Updated', 'Property ID added successfully, Enabling your tags !', 'success')
     } else {
       AddAlert('Property ID Updated', 'Property ID Updated Successfully', 'success')
     }
     ApiService.updateStoreProperty({store_id: storeId, new_value: value})
       .then(function (response) {
         if(response.data.store.enabled_scripts && !storeInfo.enabled_scripts){
-          AddAlert('Tag Enabled', 'Tags Enabled Successfully!', 'success')
+          AddAlert('Tag enabled', 'Tags enabled successfully!', 'success')
           RefatchScripts();
         }
       })
       .catch(function (error) {
         console.log(error);
-        AddAlert('Error', 'Unable To Fetch Data, Please Try Again!', 'error')
+        AddAlert('Error', 'Unable to fetch data, Please try again!', 'error')
       })
   }
 
@@ -134,7 +135,7 @@ export default function Summary(props) {
       })
       .catch(function (error) {
         console.log(error);
-        AddAlert('Error', 'Unable To Fetch Data, Please Try Again!', 'error')
+        AddAlert('Error', 'Unable to fetch data. Please try again!', 'error')
       })
   },[]);
 
@@ -176,14 +177,11 @@ export default function Summary(props) {
           }
         </Panel>
 
-        <Panel
-          header=" "
-          action={{
-            variant: 'primary',
-            text: 'Save',
-            onClick: onUpdateInput,
-          }}
-        ></Panel>
+        <StyledFooter>
+          <Button onClick={onUpdateInput} mobileWidth="auto">
+            Save
+          </Button>
+        </StyledFooter>
       </>
       }
 

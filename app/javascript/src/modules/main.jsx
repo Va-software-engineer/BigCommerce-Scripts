@@ -4,13 +4,7 @@ import {Box, Tabs, Text} from "@bigcommerce/big-design";
 import Summary from './components/pages/summary/summary'
 
 export default function Main() {
-  const [activeTab, setActiveTab] = useState('summary');
   const [currentStore, setCurrentStore] = useState('');
-
-  const items = [
-    { id: 'summary', title: 'Summary' },
-    { id: 'orders', title: 'Orders List' },
-  ];
 
   useEffect(() =>{
     setCurrentStore(localStorage.getItem('store_id'));
@@ -28,10 +22,10 @@ export default function Main() {
           fontSize: '1.5rem',
           fontWeight: 400,
           lineHeight: '2rem'}}>
-          Analytic Tag App</h1>
+          Analytics Tag App</h1>
       </div>
       { currentStore &&
-      <div style={{marginLeft: '50px', marginTop: '30px'}}>
+      <div style={{marginLeft: '50px', marginRight: '50px', marginTop: '30px'}}>
         <Summary storeId={currentStore}/>
       </div>
       }
